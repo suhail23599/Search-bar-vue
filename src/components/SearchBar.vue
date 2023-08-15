@@ -86,6 +86,8 @@ export default {
       this.showModal = true
       if (this.keyword) {
         this.debounceSearch(e.target.value)
+      } else {
+        this.searchResult = []
       }
     },
     handleKeyEvent (event) {
@@ -106,7 +108,7 @@ export default {
         }
       } else if (keyCode === 13) {
         this.showModal = false
-        if(this.activeIndex !== null) {
+        if (this.activeIndex !== null) {
           this.keyword = this.searchResult[this.activeIndex].name
         }
       } else {
