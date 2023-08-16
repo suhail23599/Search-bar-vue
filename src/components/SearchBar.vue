@@ -57,11 +57,13 @@ export default {
       URL:'http://swapi.dev/api/people/?search=',
       activeIndex: null,
       showModal: false,
-      noResult: false
+      noResult: false,
+      flag: true
     }
   },
   created () {
     this.debounceSearch = this.debounce(this.callAPI, 300)
+    this.throttleSearch = this.throttle(this.callAPI, 1000)
   },
   methods: {
     async callAPI (){
@@ -82,10 +84,10 @@ export default {
         console.log(err, 'error while fetching result')
       }
     },
-    callFn (e) {
+    callFn () {
       this.showModal = true
       if (this.keyword) {
-        this.debounceSearch(e.target.value)
+        this.debounceSearch()
       } else {
         this.searchResult = []
       }
@@ -126,6 +128,17 @@ export default {
         }, delay)
       }
     },
+    throttle (cb, delay) {
+      return function () {
+        if (this.flag) {
+          cb()
+          this.flag= false
+          setTimeout(() => {
+            this.flag = true
+          }, delay)
+        }
+      }
+    }
   }
 }
 </script>
